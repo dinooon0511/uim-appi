@@ -16,4 +16,4 @@ async function handler(req, res) {
 }
 
 module.exports = handler;
-module.exports.config = { runtime: 'nodejs' };
+module.exports.config = { runtime: 'nodejs22.x' };
