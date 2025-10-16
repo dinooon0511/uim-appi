@@ -1,0 +1,1 @@
+﻿const { pool } = require(./_db);\nmodule.exports = async (req, res) => {\n  try {\n    const result = await pool.query(select 1 as ok);\n    res.status(200).json({ db: connected, result: result.rows[0] });\n  } catch (err) {\n    res.status(500).json({ error: db_error, message: err.message });\n  }\n};\n
