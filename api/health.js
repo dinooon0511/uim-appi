@@ -3,4 +3,4 @@
 }
 
 module.exports = handler;
-module.exports.config = { runtime: 'nodejs22.x' };
+module.exports.config = { runtime: 'nodejs' };
