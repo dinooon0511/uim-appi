@@ -1,3 +1,6 @@
-﻿module.exports = async (req, res) => {
-  res.status(200).json({ ok: true, service: 'api', timestamp: Date.now() });
-};
+﻿async function handler(req, res) {
+  return res.status(200).json({ ok: true, service: 'api', timestamp: Date.now() });
+}
+
+module.exports = handler;
+module.exports.config = { runtime: 'nodejs' };

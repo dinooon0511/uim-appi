@@ -1,6 +1,6 @@
 ﻿const { Pool } = require('pg');
 
-module.exports = async (req, res) => {
+async function handler(req, res) {
   try {
     const connectionString = process.env.DATABASE_URL;
     if (!connectionString) {
@@ -9,8 +9,11 @@ module.exports = async (req, res) => {
     const pool = new Pool({ connectionString, ssl: { rejectUnauthorized: false } });
     const result = await pool.query('select 1 as ok');
     await pool.end();
-    res.status(200).json({ db: 'connected', result: result.rows[0] });
+    return res.status(200).json({ db: 'connected', result: result.rows[0] });
   } catch (err) {
-    res.status(500).json({ error: 'db_error', message: err.message });
+    return res.status(500).json({ error: 'db_error', message: err.message });
   }
-};
+}
+
+module.exports = handler;
+module.exports.config = { runtime: 'nodejs' };
