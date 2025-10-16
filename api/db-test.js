@@ -1,1 +1,16 @@
-﻿const { pool } = require(./_db);\nmodule.exports = async (req, res) => {\n  try {\n    const result = await pool.query(select 1 as ok);\n    res.status(200).json({ db: connected, result: result.rows[0] });\n  } catch (err) {\n    res.status(500).json({ error: db_error, message: err.message });\n  }\n};\n
+﻿const { Pool } = require('pg');
+
+module.exports = async (req, res) => {
+  try {
+    const connectionString = process.env.DATABASE_URL;
+    if (!connectionString) {
+      return res.status(500).json({ error: 'config_error', message: 'DATABASE_URL is not set' });
+    }
+    const pool = new Pool({ connectionString, ssl: { rejectUnauthorized: false } });
+    const result = await pool.query('select 1 as ok');
+    await pool.end();
+    res.status(200).json({ db: 'connected', result: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ error: 'db_error', message: err.message });
+  }
+};
