@@ -1,19 +1,25 @@
 ﻿const { Pool } = require('pg');
 
-async function handler(req, res) {
+module.exports = async function handler(request) {
   try {
     const connectionString = process.env.DATABASE_URL;
     if (!connectionString) {
-      return res.status(500).json({ error: 'config_error', message: 'DATABASE_URL is not set' });
+      return new Response(JSON.stringify({ error: 'config_error', message: 'DATABASE_URL is not set' }), {
+        status: 500,
+        headers: { 'content-type': 'application/json' }
+      });
     }
     const pool = new Pool({ connectionString, ssl: { rejectUnauthorized: false } });
     const result = await pool.query('select 1 as ok');
     await pool.end();
-    return res.status(200).json({ db: 'connected', result: result.rows[0] });
+    return new Response(JSON.stringify({ db: 'connected', result: result.rows[0] }), {
+      status: 200,
+      headers: { 'content-type': 'application/json' }
+    });
   } catch (err) {
-    return res.status(500).json({ error: 'db_error', message: err.message });
+    return new Response(JSON.stringify({ error: 'db_error', message: err.message }), {
+      status: 500,
+      headers: { 'content-type': 'application/json' }
+    });
   }
-}
-
-module.exports = handler;
-module.exports.config = { runtime: 'nodejs' };
+};

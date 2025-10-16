@@ -1,6 +1,7 @@
-﻿async function handler(req, res) {
-  return res.status(200).json({ ok: true, service: 'api', timestamp: Date.now() });
-}
-
-module.exports = handler;
-module.exports.config = { runtime: 'nodejs' };
+﻿module.exports = async function handler(request) {
+  const body = JSON.stringify({ ok: true, service: 'api', timestamp: Date.now() });
+  return new Response(body, {
+    status: 200,
+    headers: { 'content-type': 'application/json' }
+  });
+};
